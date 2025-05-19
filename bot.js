@@ -12,7 +12,16 @@ venom
       session: "bot",
       multidevice: true,
       headless: true,
-      browserArgs: ["--headless=new"],
+      browserArgs: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--no-first-run",
+        "--no-zygote",
+        "--single-process",
+        "--disable-gpu",
+      ],
     },
     (base64Qrimg, asciiQR, attempts, urlCode) => {
       qrCodeBase64 = base64Qrimg;
