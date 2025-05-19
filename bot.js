@@ -7,27 +7,38 @@ let qrCodeBase64 = null;
 const respondedUsers = new Set();
 
 venom
-  .create(
-    {
-      session: "bot",
-      multidevice: true,
+  .create({
+    session: "bot",
+    multidevice: true,
+    headless: true,
+    useChrome: false,
+    logQR: false,
+    browserArgs: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--no-first-run",
+      "--no-zygote",
+      "--disable-gpu",
+    ],
+    puppeteerOptions: {
       headless: true,
-      browserArgs: [
+      args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-accelerated-2d-canvas",
         "--no-first-run",
         "--no-zygote",
-        "--single-process",
         "--disable-gpu",
       ],
     },
-    (base64Qrimg, asciiQR, attempts, urlCode) => {
-      qrCodeBase64 = base64Qrimg;
-      console.log(asciiQR);
-    }
-  )
+    disableWelcome: true,
+    updatesLog: true,
+    autoClose: false,
+    createPathFileToken: true,
+  })
   .then((client) => {
     console.log("✅ WhatsApp bot started!");
 
@@ -103,7 +114,7 @@ app.get("/qr", (req, res) => {
 });
 
 // Start the web server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🌐 QR code disponível em http://localhost:${PORT}/qr`);
 });
