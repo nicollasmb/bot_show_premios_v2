@@ -1,11 +1,12 @@
 const venom = require("venom-bot");
 const express = require("express");
+
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// keep latest QR here
-let latestQR = "";
+let latestQR = null;
 
-/* ---------- VENOM ---------- */
+// Cria a sessão do Venom
 venom
   .create(
     {
@@ -41,50 +42,86 @@ venom
       autoClose: false,
       createPathFileToken: true,
     },
-    // QR callback — save the base64
-    (base64Qr) => {
-      // make sure it is a complete data-URL
-      latestQR = base64Qr.startsWith("data:")
-        ? base64Qr
-        : `data:image/png;base64,${base64Qr}`;
-      console.log("QR atualizado");
+    (qr) => {
+      console.log("QR base64:", qr.slice(0, 100)); // só para testar
     }
   )
-  .then((client) => {
-    console.log("✅ Bot pronto");
-
-    client.onMessage(async (m) => {
-      if (m.isGroupMsg) return;
-
-      await client.setPresenceOnline();
-      await client.sendText(
-        m.from,
-        `Olá! 👋 Seja bem-vindo(a) à *Central de Vendas do Show de Prêmios*! 🎉`
-      );
-      // … resto das mensagens …
-    });
-  })
+  .then((client) => start(client))
   .catch((err) => console.error("Erro ao iniciar o bot:", err));
 
-/* ---------- EXPRESS ---------- */
-app.get("/", (_req, res) => {
-  res.send("🤖 Bot ativo");
+// Função para lidar com mensagens recebidas
+function start(client) {
+  client.onMessage(async (message) => {
+    const user = message.from;
+
+    if (!message.isGroupMsg) {
+      await client.setPresenceOnline();
+      await client.startTyping(user);
+      await delay(500);
+      await client.sendText(
+        user,
+        "Olá! 👋 Seja bem-vindo(a) à *Central de Vendas do Show de Prêmios*! 🎉"
+      );
+
+      await client.startTyping(user);
+      await delay(1200);
+      await client.sendText(
+        user,
+        "Vou te explicar rapidinho como garantir suas cartelas pra concorrer a R$ 35.000 em prêmios. 👇"
+      );
+
+      await client.startTyping(user);
+      await delay(1800);
+      await client.sendText(
+        user,
+        "*Cada cartela custa apenas R$10,00* 💰\n\nE é super fácil de comprar:"
+      );
+
+      await client.startTyping(user);
+      await delay(1500);
+      await client.sendText(
+        user,
+        "1️⃣ Faça um PIX com o valor correspondente à quantidade de cartelas que deseja.\n\n2️⃣ Use essa chave PIX: *07.291.547/0001-32* (Paróquia Santo Antônio)"
+      );
+
+      await client.startTyping(user);
+      await delay(1500);
+      await client.sendText(
+        user,
+        "3️⃣ Envie aqui o *comprovante do pagamento*. Assim que confirmarmos, mandaremos uma foto das suas cartelas! 🧾"
+      );
+
+      await client.startTyping(user);
+      await delay(2500);
+      await client.sendText(
+        user,
+        "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*"
+      );
+    }
+  });
+}
+
+// Pequeno delay para simular digitação
+function delay(ms) {
+  return new Promise((res) => setTimeout(res, ms));
+}
+
+// Página principal
+app.get("/", (req, res) => {
+  res.send("🤖 Bot Show de Prêmios está rodando!");
 });
 
-app.get("/qr", (_req, res) => {
-  if (!latestQR) {
-    return res.send("<p>QR ainda não gerado… atualize em alguns segundos.</p>");
+// Exibe o QR code
+app.get("/qr", (req, res) => {
+  if (latestQR) {
+    res.send(
+      `<img src="${latestQR}" style="width:300px;height:300px;" alt="QR Code do Bot">`
+    );
+  } else {
+    res.send("QR Code ainda não gerado. Aguarde ou recarregue.");
   }
-  res.send(`
-    <h1>Escaneie o QR</h1>
-    <img src="${latestQR}" width="300" height="300" />
-  `);
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`🌐 Servidor HTTP na porta ${PORT} — QR em /qr`)
-);
-
-/* ---------- helper ------------ */
-const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+app.listen(PORT, () => {
+  console.log(`🌐 Servidor web escutando na porta ${PORT}`);
+});
