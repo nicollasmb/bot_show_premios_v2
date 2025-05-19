@@ -1,61 +1,40 @@
-const venom = require("venom-bot");
-const express = require("express");
+const wa = require('@open-wa/wa-automate');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const respondedUsers = new Set();
 
-let latestQR = null;
+wa.create({
+  sessionId: 'bot',
+  headless: true,
+  qrTimeout: 0,
+  authTimeout: 0,
+  killProcessOnBrowserClose: true,
+  useChrome: true,
+  throwErrorOnTosBlock: false,
+  cacheEnabled: false,
+  browserArgs: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-accelerated-2d-canvas',
+    '--no-first-run',
+    '--no-zygote',
+    '--disable-gpu',
+  ],
+}).then(client => start(client));
 
-// Cria a sessão do Venom
-venom
-  .create(
-    {
-      session: "bot",
-      multidevice: true,
-      headless: true,
-      useChrome: true,
-      logQR: false,
-      browserArgs: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-accelerated-2d-canvas",
-        "--no-first-run",
-        "--no-zygote",
-        "--disable-gpu",
-      ],
-      puppeteerOptions: {
-        headless: true,
-        executablePath:
-          process.env.CHROME_BIN || process.env.GOOGLE_CHROME_SHIM,
-        args: [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-accelerated-2d-canvas",
-          "--no-first-run",
-          "--no-zygote",
-          "--disable-gpu",
-        ],
-      },
-      disableWelcome: true,
-      autoClose: false,
-      createPathFileToken: true,
-    },
-    (qr) => {
-      console.log("QR base64:", qr.slice(0, 100)); // só para testar
-    }
-  )
-  .then((client) => start(client))
-  .catch((err) => console.error("Erro ao iniciar o bot:", err));
+function delay(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
 
-// Função para lidar com mensagens recebidas
-function start(client) {
-  client.onMessage(async (message) => {
+async function start(client) {
+  client.onMessage(async message => {
     const user = message.from;
 
-    if (!message.isGroupMsg) {
-      await client.setPresenceOnline();
+    // Ignora grupos e só responde uma vez por usuário
+    if (!respondedUsers.has(user) && !message.isGroupMsg) {
+      respondedUsers.add(user);
+
+      await client.setPresence(true); // coloca online (true)
       await client.startTyping(user);
       await delay(500);
       await client.sendText(
@@ -100,28 +79,3 @@ function start(client) {
     }
   });
 }
-
-// Pequeno delay para simular digitação
-function delay(ms) {
-  return new Promise((res) => setTimeout(res, ms));
-}
-
-// Página principal
-app.get("/", (req, res) => {
-  res.send("🤖 Bot Show de Prêmios está rodando!");
-});
-
-// Exibe o QR code
-app.get("/qr", (req, res) => {
-  if (latestQR) {
-    res.send(
-      `<img src="${latestQR}" style="width:300px;height:300px;" alt="QR Code do Bot">`
-    );
-  } else {
-    res.send("QR Code ainda não gerado. Aguarde ou recarregue.");
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`🌐 Servidor web escutando na porta ${PORT}`);
-});
