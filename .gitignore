@@ -1,8 +1,2 @@
 *tokens
 *node_modules
-
-# managed
-**.data.json
-**.node-persist**
-**_IGNORE_**
-# end managed
