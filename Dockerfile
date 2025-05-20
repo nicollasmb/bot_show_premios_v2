@@ -29,7 +29,6 @@ WORKDIR /app
 
 # Copia arquivos e instala dependências
 COPY package*.json ./
-RUN npm config set puppeteer_skip_chromium_download true
 RUN npm install
 COPY . .
 
