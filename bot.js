@@ -7,7 +7,19 @@ venom
     session: "bot",
     multidevice: true,
     headless: true,
-    browserArgs: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
+    browserArgs: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--disable-gpu",
+      "--disable-setuid-sandbox",
+      "--no-zygote",
+      "--single-process",
+      "--disable-extensions",
+    ],
+    executablePath:
+      process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
   })
   .then((client) => {
     client.onMessage(async (message) => {

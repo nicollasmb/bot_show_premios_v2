@@ -1,12 +1,9 @@
-# Use a imagem oficial do Node com Chromium
 FROM node:20-slim
 
-# Instale dependências do Chromium
+# Instala dependências necessárias para o Chromium
 RUN apt-get update && apt-get install -y \
-    wget \
-    ca-certificates \
+    chromium \
     fonts-liberation \
-    libappindicator3-1 \
     libasound2 \
     libatk-bridge2.0-0 \
     libatk1.0-0 \
@@ -20,21 +17,23 @@ RUN apt-get update && apt-get install -y \
     libxdamage1 \
     libxrandr2 \
     xdg-utils \
-    libu2f-udev \
-    libvulkan1 \
+    wget \
+    curl \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
-# Cria diretório do app
+# Define variável de ambiente para o caminho do Chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
 WORKDIR /app
 
-# Copia os arquivos
+# Copia arquivos e instala dependências
 COPY package*.json ./
+RUN npm config set puppeteer_skip_chromium_download true
 RUN npm install
 COPY . .
 
-# Expõe a porta padrão (altere se necessário)
+# Expõe a porta (se necessário)
 EXPOSE 3000
 
-# Comando para iniciar o bot
 CMD ["node", "bot.js"]
