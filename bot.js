@@ -1,24 +1,27 @@
 const venom = require("venom-bot");
+
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;
+
+app.use(express.static(".")); // Serve qr-code.png
+
+app.listen(3000, () =>
+  console.log("Servidor rodando em http://localhost:3000")
+);
 
 const respondedUsers = new Set();
-
-let latestBase64QR = null;
 
 venom
   .create({
     session: "bot",
     multidevice: true,
     headless: true,
-    browserArgs: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
-    qrCallback: (base64Qrimg, asciiQR, attempts, urlCode) => {
-      console.log("QR code received");
-      latestBase64QR = base64Qrimg;
+    browserArgs: ["--headless=new"],
+    catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
+      const base64Data = base64Qr.replace(/^data:image\/png;base64,/, "");
+      require("fs").writeFileSync("qr-code.png", base64Data, "base64");
+      console.log("QR code salvo como qr-code.png");
     },
-    executablePath:
-      process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
   })
   .then((client) => {
     client.onMessage(async (message) => {
@@ -76,24 +79,3 @@ venom
 function delay(ms) {
   return new Promise((res) => setTimeout(res, ms));
 }
-
-app.get("/qr", (req, res) => {
-  if (latestBase64QR) {
-    const img = Buffer.from(
-      latestBase64QR.replace(/^data:image\/png;base64,/, ""),
-      "base64"
-    );
-    res.writeHead(200, {
-      "Content-Type": "image/png",
-      "Content-Length": img.length,
-    });
-    res.end(img);
-  } else {
-    res.send("QR Code not generated yet. Try again shortly.");
-  }
-});
-
-// 🚀 Start web server
-app.listen(port, () => {
-  console.log(`QR server running at http://localhost:${port}/qr`);
-});
