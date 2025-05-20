@@ -8,6 +8,10 @@ venom
     multidevice: true,
     headless: true,
     browserArgs: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
+    qrCallback: (base64Qrimg, asciiQR, attempts, urlCode) => {
+      console.log("Scan QR Code at:");
+      console.log(`data:image/png;base64,${base64Qrimg}`);
+    },
     executablePath:
       process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
   })
