@@ -7,7 +7,7 @@ venom
     session: "bot",
     multidevice: true,
     headless: true,
-    browserArgs: ["--headless=new"],
+    browserArgs: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
   })
   .then((client) => {
     client.onMessage(async (message) => {
