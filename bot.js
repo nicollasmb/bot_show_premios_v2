@@ -1,6 +1,11 @@
 const venom = require("venom-bot");
+const express = require("express");
+const app = express();
+const port = process.env.PORT || 3000;
 
 const respondedUsers = new Set();
+
+let latestBase64QR = null;
 
 venom
   .create({
@@ -9,8 +14,8 @@ venom
     headless: true,
     browserArgs: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
     qrCallback: (base64Qrimg, asciiQR, attempts, urlCode) => {
-      console.log("Scan QR Code at:");
-      console.log(`data:image/png;base64,${base64Qrimg}`);
+      console.log("QR code received");
+      latestBase64QR = base64Qrimg;
     },
     executablePath:
       process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
@@ -71,3 +76,24 @@ venom
 function delay(ms) {
   return new Promise((res) => setTimeout(res, ms));
 }
+
+app.get("/qr", (req, res) => {
+  if (latestBase64QR) {
+    const img = Buffer.from(
+      latestBase64QR.replace(/^data:image\/png;base64,/, ""),
+      "base64"
+    );
+    res.writeHead(200, {
+      "Content-Type": "image/png",
+      "Content-Length": img.length,
+    });
+    res.end(img);
+  } else {
+    res.send("QR Code not generated yet. Try again shortly.");
+  }
+});
+
+// 🚀 Start web server
+app.listen(port, () => {
+  console.log(`QR server running at http://localhost:${port}/qr`);
+});
