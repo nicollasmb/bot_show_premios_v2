@@ -22,6 +22,8 @@ venom
       require("fs").writeFileSync("qr-code.png", base64Data, "base64");
       console.log("QR code salvo como qr-code.png");
     },
+    executablePath:
+      process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
   })
   .then((client) => {
     client.onMessage(async (message) => {
