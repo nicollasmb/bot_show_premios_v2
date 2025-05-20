@@ -16,7 +16,7 @@ venom
     session: "bot",
     multidevice: true,
     headless: true,
-    browserArgs: ["--headless=new"],
+    browserArgs: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
     catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
       const base64Data = base64Qr.replace(/^data:image\/png;base64,/, "");
       require("fs").writeFileSync("qr-code.png", base64Data, "base64");
