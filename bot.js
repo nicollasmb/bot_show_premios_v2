@@ -16,7 +16,17 @@ venom
     session: "bot",
     multidevice: true,
     headless: true,
-    browserArgs: ["--no-sandbox", "--disable-setuid-sandbox", "--headless=new"],
+    browserArgs: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--disable-extensions",
+      "--disable-dev-tools",
+      "--disable-software-rasterizer",
+      "--disable-sync",
+      "--headless=new",
+    ],
     catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
       const base64Data = base64Qr.replace(/^data:image\/png;base64,/, "");
       require("fs").writeFileSync("qr-code.png", base64Data, "base64");
@@ -24,6 +34,7 @@ venom
     },
     executablePath:
       process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
+    sessionPath: "/tmp/tokens",
   })
   .then((client) => {
     client.onMessage(async (message) => {
