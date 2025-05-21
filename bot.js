@@ -1,12 +1,16 @@
-const { create, ev } = require("@open-wa/wa-automate");
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const { create } = require("@open-wa/wa-automate");
 
 const app = express();
-const respondedUsers = new Set();
+const publicPath = path.join(__dirname, "public");
 
-app.use(express.static("."));
+if (!fs.existsSync(publicPath)) {
+  fs.mkdirSync(publicPath);
+}
+
+app.use(express.static(publicPath));
 
 app.listen(3000, () => {
   console.log("Servidor rodando em http://localhost:3000");
@@ -41,11 +45,13 @@ create({
   qrLogSkip: false,
   qrCallback: (base64Qr) => {
     const base64Data = base64Qr.replace(/^data:image\/png;base64,/, "");
-    fs.writeFileSync(path.join(__dirname, "qr-code.png"), base64Data, "base64");
-    console.log("QR code salvo como qr-code.png");
+    const qrPath = path.join(publicPath, "qr-code.png");
+    console.log("[INFO] Salvando QR code...");
+    fs.writeFileSync(qrPath, base64Data, "base64");
+    console.log("[INFO] QR code salvo em:", qrPath);
   },
 }).then((client) => {
-  console.log("🤖 Bot iniciado com sucesso!");
+  console.log("🤖 Bot iniciado!");
 
   client.onMessage(async (message) => {
     const user = message.from;
