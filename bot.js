@@ -1,19 +1,34 @@
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
 const { create } = require("@open-wa/wa-automate");
+const express = require("express");
 
 const app = express();
-const publicPath = path.join(__dirname, "public");
+const PORT = process.env.PORT || 3000;
 
-if (!fs.existsSync(publicPath)) {
-  fs.mkdirSync(publicPath);
-}
+let latestQr = null;
+let qrExpired = false;
 
-app.use(express.static(publicPath));
+app.get("/", (req, res) => {
+  if (!latestQr) {
+    return res.send(
+      "<h2>Esperando QR code...</h2><p>Abra seu console para logs.</p>"
+    );
+  }
+  if (qrExpired) {
+    return res.send(
+      "<h2>QR code expirou. Por favor, recarregue a página.</h2>"
+    );
+  }
 
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000");
+  // Mostra o QR inline em base64
+  res.send(`
+    <h2>Escaneie o QR code com o WhatsApp</h2>
+    <img src="${latestQr}" />
+    <p>O QR expira a cada 15 segundos, recarregue a página para novo QR.</p>
+  `);
+});
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
 
 function delay(ms) {
@@ -44,13 +59,15 @@ create({
   qrRefreshS: 15,
   qrLogSkip: false,
   qrCallback: (base64Qr) => {
-    const base64Data = base64Qr.replace(/^data:image\/png;base64,/, "");
-    const qrPath = path.join(publicPath, "qr-code.png");
-    console.log("[INFO] Salvando QR code...");
-    fs.writeFileSync(qrPath, base64Data, "base64");
-    console.log("[INFO] QR code salvo em:", qrPath);
+    latestQr = base64Qr;
+    qrExpired = false;
+    console.log("[INFO] QR code atualizado");
   },
-}).then((client) => {
+  qrTimeoutCallback: () => {
+    qrExpired = true;
+    console.log("[INFO] QR code expirou");
+  },
+}).then(async (client) => {
   console.log("🤖 Bot iniciado!");
 
   client.onMessage(async (message) => {
