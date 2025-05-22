@@ -1,0 +1,257 @@
+[
+  {
+    "ref": "ce3bc295-b900-41ea-aa4c-7b38664db625",
+    "keyword": "f971bed54dccc3aa8d5026a9314dad38",
+    "answer": "She",
+    "options": {},
+    "from": "554299274004",
+    "refSerialize": "d51b59f3db996809b05367b5f0b43d2b"
+  },
+  {
+    "ref": "ans_aaab118f-f9cf-4e14-963f-7f06e351caee",
+    "keyword": "key_95895c74-daa9-4c8c-96b5-3a3c81799889",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "2930b843764c6c0abe7a11aca42828e4",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_ab13dcaa-3041-4690-8068-95d8c23235c3",
+    "keyword": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "answer": "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "bc01b2c7890264a60b78e23feddb768d",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_09a9f5ad-504d-4308-863f-477fd7b4c2c4",
+    "keyword": "ans_aaab118f-f9cf-4e14-963f-7f06e351caee",
+    "answer": "Olá! 👋 Seja bem-vindo(a) à *Central de Vendas do Show de Prêmios*! 🎉",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 1000,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "69dc71db4709d5373835f67284c619e2",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_ab13dcaa-3041-4690-8068-95d8c23235c3",
+    "keyword": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "answer": "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "bc01b2c7890264a60b78e23feddb768d",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_b57e6ae0-6efa-43e4-85d8-7d78428f17d6",
+    "keyword": "ans_09a9f5ad-504d-4308-863f-477fd7b4c2c4",
+    "answer": "Vou te explicar rapidinho como garantir suas cartelas pra concorrer a *R$ 35.000 em prêmios.* 👇",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 2000,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "cf9d7f03d19d6ea058e8d1c174327a0a",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_ab13dcaa-3041-4690-8068-95d8c23235c3",
+    "keyword": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "answer": "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "bc01b2c7890264a60b78e23feddb768d",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_0c0e79e2-dc04-4d2c-ae82-2fca7fac6e0c",
+    "keyword": "ans_b57e6ae0-6efa-43e4-85d8-7d78428f17d6",
+    "answer": "*Cada cartela custa apenas R$10,00* 💰\n\nE é super fácil de comprar:",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 2500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "262fc09f7045703cf6bd0c3ff62471e9",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_ab13dcaa-3041-4690-8068-95d8c23235c3",
+    "keyword": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "answer": "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "bc01b2c7890264a60b78e23feddb768d",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_4ec36a7e-14b1-486e-a492-14c3510bde03",
+    "keyword": "ans_0c0e79e2-dc04-4d2c-ae82-2fca7fac6e0c",
+    "answer": "1️⃣ Faça um PIX com o valor correspondente à quantidade de cartelas que deseja.\n\n2️⃣ Use a chave PIX CNPJ: *07.291.547/0001-32* (Paróquia Santo Antônio)",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3000,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "5f65d2a96fe4ecde9e48b6df9608d497",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_ab13dcaa-3041-4690-8068-95d8c23235c3",
+    "keyword": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "answer": "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "bc01b2c7890264a60b78e23feddb768d",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "keyword": "ans_4ec36a7e-14b1-486e-a492-14c3510bde03",
+    "answer": "3️⃣ Envie aqui o *comprovante do pagamento*. Assim que confirmarmos, mandaremos uma foto das suas cartelas! 🧾",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3000,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "04aa18467f81d824786e66d14c89a672",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_ab13dcaa-3041-4690-8068-95d8c23235c3",
+    "keyword": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "answer": "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "bc01b2c7890264a60b78e23feddb768d",
+    "from": "554299274004"
+  },
+  {
+    "ref": "ans_ab13dcaa-3041-4690-8068-95d8c23235c3",
+    "keyword": "ans_99bbf5f6-504c-4071-8c43-796ba8f72e2e",
+    "answer": "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 3500,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "bc01b2c7890264a60b78e23feddb768d",
+    "from": "554299274004"
+  }
+]

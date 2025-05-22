@@ -1,8 +1,2 @@
 *node_modules
-*tokens
-
-# managed
-**.data.json
-**.node-persist**
-**_IGNORE_**
-# end managed
+*bot_sessions
