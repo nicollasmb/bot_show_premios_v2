@@ -40,10 +40,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
     "3️⃣ Envie aqui o *comprovante do pagamento*. Assim que confirmarmos, mandaremos uma foto das suas cartelas! 🧾",
     { delay: 3000 }
   )
-  .addAnswer(
-    "✅ Pronto! Agora é só enviar o comprovante aqui e a gente cuida do resto. 😉\n\n*Qualquer dúvida, pode me chamar!*",
-    { delay: 3500 }
-  );
+  .addAnswer("😉 Qualquer dúvida, pode me chamar!", { delay: 3500 });
 
 const main = async () => {
   const adapterDB = new JsonFileAdapter();
