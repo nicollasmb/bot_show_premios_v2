@@ -10,20 +10,20 @@ const QRPortalWeb = require("@bot-whatsapp/portal");
 const BaileysProvider = require("@bot-whatsapp/provider/baileys");
 const JsonFileAdapter = require("@bot-whatsapp/database/json");
 
+// Define the main flow
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
-  .addAction(async (ctx, { state, endFlow }) => {
-    console.log(`📥 Message received from: ${ctx.from}`);
+  .addAction(async (ctx, { flowDynamic, endFlow, state }) => {
+    const userId = ctx.from;
+    const hasVisited = await state.get(`user:${userId}:hasVisited`);
 
-    const userState = await state.getMyState();
-    const alreadyWelcomed = userState?.welcomed || false;
-
-    if (alreadyWelcomed) {
-      console.log(`⛔ User ${ctx.from} already welcomed. Ending flow.`);
-      return endFlow();
+    if (hasVisited) {
+      console.log(`User ${userId} already received the welcome message.`);
+      return endFlow(); // Stop the flow if already greeted
     }
 
-    await state.update({ welcomed: true });
-    console.log(`✅ Responding welcome to: ${ctx.from}`);
+    // Mark as greeted
+    await state.update({ [`user:${userId}:hasVisited`]: true });
+    console.log(`Greeting user ${userId} for the first time.`);
   })
   .addAnswer(
     "Olá! 👋 Seja bem-vindo(a) à *Central de Vendas do Show de Prêmios*! 🎉",
@@ -47,23 +47,22 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
   )
   .addAnswer("😉 Qualquer dúvida, pode me chamar!", { delay: 3500 });
 
+// Initialize the bot
 const main = async () => {
-  const adapterDB = new JsonFileAdapter();
-  const adapterFlow = createFlow([flowPrincipal]);
-  const adapterProvider = createProvider(BaileysProvider);
+  const adapterDB = new JsonFileAdapter(); // Local JSON DB
+  const adapterFlow = createFlow([flowPrincipal]); // Create the flow
+  const adapterProvider = createProvider(BaileysProvider); // WhatsApp connection
 
-  const bot = await createBot({
+  // Create the bot
+  createBot({
     flow: adapterFlow,
     provider: adapterProvider,
     database: adapterDB,
   });
 
-  // 🔥 Log de todas as mensagens recebidas
-  bot.on("message", (ctx) => {
-    console.log(`💌 New message from ${ctx.from}: ${ctx.body}`);
-  });
-
+  // Show QR code portal
   QRPortalWeb();
 };
 
+// Start the bot
 main();
