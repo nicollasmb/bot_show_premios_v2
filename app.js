@@ -14,11 +14,11 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
   .addAction(async (ctx, { state, endFlow }) => {
     console.log(`📥 Message received from: ${ctx.from}`);
 
-    const data = await state.getMyState();
-    const alreadyWelcomed = data?.welcomed || false;
+    const userState = await state.getMyState();
+    const alreadyWelcomed = userState?.welcomed || false;
 
     if (alreadyWelcomed) {
-      console.log(`⛔ User ${ctx.from} already received welcome. Ending flow.`);
+      console.log(`⛔ User ${ctx.from} already welcomed. Ending flow.`);
       return endFlow();
     }
 
@@ -58,7 +58,7 @@ const main = async () => {
     database: adapterDB,
   });
 
-  // Log every incoming message
+  // 🔥 Log de todas as mensagens recebidas
   bot.on("message", (ctx) => {
     console.log(`💌 New message from ${ctx.from}: ${ctx.body}`);
   });
