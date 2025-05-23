@@ -10,18 +10,17 @@ const QRPortalWeb = require("@bot-whatsapp/portal");
 const BaileysProvider = require("@bot-whatsapp/provider/baileys");
 const JsonFileAdapter = require("@bot-whatsapp/database/json");
 
-// Define the main flow
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
   .addAction(async (ctx, { flowDynamic, endFlow, state }) => {
-    const myState = await state.getMyState();
+    const myState = (await state.getMyState()) || {}; // 🔥 Se for null/undefined, vira {}
 
     if (myState.hasVisited) {
-      console.log(`User ${ctx.from} already received the welcome message.`);
-      return endFlow(); // Stop the flow if already greeted
+      console.log(`Usuário ${ctx.from} já recebeu a mensagem de boas-vindas.`);
+      return endFlow(); // Finaliza o fluxo se já recebeu
     }
 
-    await state.update({ hasVisited: true });
-    console.log(`Greeting user ${ctx.from} for the first time.`);
+    await state.update({ hasVisited: true }); // 🔥 Marca como visitado
+    console.log(`Enviando mensagem de boas-vindas para ${ctx.from}`);
   })
   .addAnswer(
     "Olá! 👋 Seja bem-vindo(a) à *Central de Vendas do Show de Prêmios*! 🎉",
@@ -45,7 +44,6 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
   )
   .addAnswer("😉 Qualquer dúvida, pode me chamar!", { delay: 3500 });
 
-// Initialize the bot
 const main = async () => {
   const adapterDB = new JsonFileAdapter();
   const adapterFlow = createFlow([flowPrincipal]);
