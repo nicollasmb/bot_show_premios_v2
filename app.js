@@ -12,17 +12,18 @@ const JsonFileAdapter = require("@bot-whatsapp/database/json");
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
   .addAction(async (ctx, { state, endFlow }) => {
-    console.log(`Message received from: ${ctx.from}`);
+    console.log(`📥 Message received from: ${ctx.from}`);
 
-    const alreadyWelcomed = await state.get("welcomed");
+    const data = await state.getMyState();
+    const alreadyWelcomed = data?.welcomed || false;
 
     if (alreadyWelcomed) {
-      console.log(`User ${ctx.from} already received welcome. Ending flow.`);
+      console.log(`⛔ User ${ctx.from} already received welcome. Ending flow.`);
       return endFlow();
     }
 
     await state.update({ welcomed: true });
-    console.log(`Responding welcome to: ${ctx.from}`);
+    console.log(`✅ Responding welcome to: ${ctx.from}`);
   })
   .addAnswer(
     "Olá! 👋 Seja bem-vindo(a) à *Central de Vendas do Show de Prêmios*! 🎉",
@@ -59,7 +60,7 @@ const main = async () => {
 
   // Log every incoming message
   bot.on("message", (ctx) => {
-    console.log(`New message from ${ctx.from}: ${ctx.body}`);
+    console.log(`💌 New message from ${ctx.from}: ${ctx.body}`);
   });
 
   QRPortalWeb();
