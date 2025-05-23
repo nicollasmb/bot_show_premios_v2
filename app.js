@@ -10,15 +10,19 @@ const QRPortalWeb = require("@bot-whatsapp/portal");
 const BaileysProvider = require("@bot-whatsapp/provider/baileys");
 const JsonFileAdapter = require("@bot-whatsapp/database/json");
 
-const usersAnswered = new Set();
-
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
-  .addAction(async (ctx, { flowDynamic, endFlow }) => {
-    const userId = ctx.from;
-    if (usersAnswered.has(userId)) {
+  .addAction(async (ctx, { state, endFlow }) => {
+    console.log(`Message received from: ${ctx.from}`);
+
+    const alreadyWelcomed = await state.get("welcomed");
+
+    if (alreadyWelcomed) {
+      console.log(`User ${ctx.from} already received welcome. Ending flow.`);
       return endFlow();
     }
-    usersAnswered.add(userId);
+
+    await state.update({ welcomed: true });
+    console.log(`Responding welcome to: ${ctx.from}`);
   })
   .addAnswer(
     "Olá! 👋 Seja bem-vindo(a) à *Central de Vendas do Show de Prêmios*! 🎉",
@@ -47,10 +51,15 @@ const main = async () => {
   const adapterFlow = createFlow([flowPrincipal]);
   const adapterProvider = createProvider(BaileysProvider);
 
-  createBot({
+  const bot = await createBot({
     flow: adapterFlow,
     provider: adapterProvider,
     database: adapterDB,
+  });
+
+  // Log every incoming message
+  bot.on("message", (ctx) => {
+    console.log(`New message from ${ctx.from}: ${ctx.body}`);
   });
 
   QRPortalWeb();
